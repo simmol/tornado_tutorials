@@ -13,8 +13,7 @@ clients = dict()
 class IndexHanler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
-        self.write("This is your response")
-        self.finish()
+        self.render("index.html")
 
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
@@ -29,7 +28,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         when we receive some message we want some message handler...
         for this example print to console
         """
-        print("Clien % received a message : %s", (self.id, message))
+        print("Clien %s received a message : %s" % (self.id, message))
 
     def on_close(self):
         if self.id in clients:
@@ -37,7 +36,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
 app = tornado.web.Application([
     (r'/', IndexHanler),
-    (r'/', WebSocketHandler),
+    (r'/socket', WebSocketHandler),
 ])
 
 if __name__ == '__main__':
